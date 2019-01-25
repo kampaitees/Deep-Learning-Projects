@@ -24,6 +24,7 @@ import tensorflow as tf
 from fr_utils import *
 from inception_blocks_v2 import *
 
+#Loading the pretrained inception net model
 FRmodel = faceRecoModel(input_shape=(3, 96, 96))
 
 ##Computing the Triplet Loss
@@ -44,9 +45,7 @@ def triplet_loss(y_true, y_pred, alpha = 0.2):
     """
     
     anchor, positive, negative = y_pred[0], y_pred[1], y_pred[2]
-    
-    #print(y_pred[0].get_shape())
-    
+   
     # Step 1: Compute the (encoding) distance between the anchor and the positive, you will need to sum over axis=-1
     pos_dist = tf.reduce_sum(tf.square(tf.subtract(anchor,positive)), axis = -1)
     # Step 2: Compute the (encoding) distance between the anchor and the negative, you will need to sum over axis=-1
@@ -55,8 +54,7 @@ def triplet_loss(y_true, y_pred, alpha = 0.2):
     basic_loss = pos_dist - neg_dist + alpha
     # Step 4: Take the maximum of basic_loss and 0.0. Sum over the training examples.
     loss = tf.reduce_sum(tf.maximum(basic_loss,0.0))
-   
-    
+  
     return loss
 
 
@@ -84,7 +82,6 @@ database["arnaud"] = img_to_encoding("images/arnaud.jpg", FRmodel)
 
 
 #Verifying Images
-
 
 def verify(image_path, identity, database, model):
     """
@@ -120,14 +117,11 @@ def verify(image_path, identity, database, model):
 
 
 #Calling the above function
-
-
 verify("images/camera_0.jpg", "younes", database, FRmodel)
 
 
 
-
-#Now doing Face Recognition
+###Now doing Face Recognition
 
 
 def who_is_it(image_path, database, model):
