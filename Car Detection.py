@@ -113,11 +113,11 @@ def yolo_non_max_suppression(scores, boxes, classes, max_boxes = 10, iou_thresho
     K.get_session().run(tf.variables_initializer([max_boxes_tensor])) # initialize variable max_boxes_tensor
     
     # Use tf.image.non_max_suppression() to get the list of indices corresponding to boxes you keep
-    ### START CODE HERE ### (≈ 1 line)
+   
     nms_indices = tf.image.non_max_suppression(boxes = boxes, scores = scores, max_output_size = max_boxes, iou_threshold = iou_threshold)
 
     # Use K.gather() to select only nms_indices from scores, boxes and classes
-    ### START CODE HERE ### (≈ 3 lines)
+   
     scores = tf.gather(params = scores, indices = nms_indices)
     boxes = tf.gather(params = boxes, indices = nms_indices)
     classes = tf.gather(params = classes, indices = nms_indices)
@@ -146,8 +146,9 @@ def yolo_eval(yolo_outputs, image_shape = (720., 1280.), max_boxes=10, score_thr
     scores -- tensor of shape (None, ), predicted score for each box
     boxes -- tensor of shape (None, 4), predicted box coordinates
     classes -- tensor of shape (None,), predicted class for each box
-   
-    # Retrieve outputs of the YOLO model (≈1 line)
+    """
+    
+    # Retrieve outputs of the YOLO model 
     box_confidence, box_xy, box_wh, box_class_probs = yolo_outputs
 
     # Convert boxes to be ready for filtering functions 
